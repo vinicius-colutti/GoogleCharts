@@ -108,7 +108,8 @@ function desenharPizza(){
             ]);
  
             tabela.sort([{column:1, desc: true}]);
-
+            var conversao = tabela.toJSON();
+            console.log(conversao);
             var opcoes = {  
                 title: 'Tipos de Gastos',
                 height:400,
@@ -129,16 +130,59 @@ function desenharPizza(){
             //GRAFICO DE BARRAS COM ARQUIVO JSON
 
             var dadosJson = $.ajax({
-                url: 'json/dados.json',
+                url: 'https://gist.githubusercontent.com/vinicius-colutti/84aaa8e1a25f207ab57cbc1be046c964/raw/2e60b8b6b6cc1122927153373552709ec4d042b9/dados.json',
                 dataType: 'json',
                 async: false
             }).responseText;
 
+            var opcoes = {  
+                title: 'Tipos de Gastos',
+                height:400,
+                width: 1000,
+                vAxis: {gridlines: {count:0, color: 'transparent'}},
+                legend:'none',
+                annotations: {alwaysOutside: 'true'} 
+            }
+
             var tabela = new google.visualization.DataTable(dadosJson);
+
+            tabela.sort([{column:1, desc: true}]);
 
             var grafico = new google.visualization.BarChart(document.getElementById('graficoBarrasJson'));
 
-            grafico.draw(tabela);
+            grafico.draw(tabela,opcoes);
+
+
+
+
+
+            //HISTOGRAMA
+
+
+            var data = google.visualization.arrayToDataTable ([
+            ['Qtde','<=0.5s', { role: "style" }, '<=1.5s', { role: "style" }, '<=3.0s', { role: "style" },'<=5.0s', { role: "style" },'>5.0s', { role: "style" }],
+            ['2010', 10, '#008000', 24, '#3CB371', 20, '#FFFF00', 32, '#D2691E', 18, '#8B0000'],
+            ['2020', 16,'#008000', 22, '#3CB371',23, '#FFFF00',30, '#D2691E',16, '#8B0000'],
+            ['2030', 28,'#008000', 19, '#3CB371', 29, '#FFFF00',30, '#D2691E',12, '#8B0000'],
+            ['2030', 28,'#008000', 19, '#3CB371', 29, '#FFFF00',30, '#D2691E',12, '#8B0000'],
+            ['2030', 28,'#008000', 19, '#3CB371', 29, '#FFFF00',30, '#D2691E',12, '#8B0000'],
+            ['2030', 28,'#008000', 19, '#3CB371', 29, '#FFFF00',30, '#D2691E',12, '#8B0000'],
+            ['2030', 28,'#008000', 19, '#3CB371', 29, '#FFFF00',30, '#D2691E',12, '#8B0000'],
+            ['2030', 28,'#008000', 19, '#3CB371', 29, '#FFFF00',30, '#D2691E',12, '#8B0000']
+            ]);
+
+            var options = {
+                width: 800,
+                height: 400,
+                legend: { position: 'top', maxLines: 3},
+                colors: ['#008000', '#3CB371', '#FFFF00', '#D2691E', '#8B0000'],
+                bar: { groupWidth: '75%'},
+                isStacked: true
+            };
+
+            var grafico = new google.visualization.BarChart(document.getElementById("graficoHistograma"));
+             
+            grafico.draw(data, options); 
 
 
         }
